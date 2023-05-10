@@ -7,9 +7,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteAbortException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
 
 import androidx.annotation.Nullable;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +41,7 @@ import java.util.List;
         // when creating the database
         @Override
         public void onCreate(SQLiteDatabase sqLiteDatabase) {
-            String createTableStatement = "Create TABLE " + VEHICLE_TABLE + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_VEHICLE_PLATE + " TEXT, " + COLUMN_VEHICLE_MODEL + " TEXT, " + COLUMN_VEHICLE_YEAR + " INT, "+ COLUMN_VEHICLE_TYPE +" TEXT, " + COLUMN_VEHICLE_LOCATION + " TEXT, " + COLUMN_VEHICLE_DESCRIPTION + " TEXT, "  + COLUMN_VEHICLE_RENT + " INT, " + COLUMN_img + " TEXT)";
+            String createTableStatement = "Create TABLE " + VEHICLE_TABLE + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_VEHICLE_PLATE + " TEXT, " + COLUMN_VEHICLE_MODEL + " TEXT, " + COLUMN_VEHICLE_YEAR + " INT, "+ COLUMN_VEHICLE_TYPE +" TEXT, " + COLUMN_VEHICLE_LOCATION + " TEXT, " + COLUMN_VEHICLE_DESCRIPTION + " TEXT, "  + COLUMN_VEHICLE_RENT + " INT, " + COLUMN_img + " BLOB)";
             sqLiteDatabase.execSQL(createTableStatement);
         }
         // when upgrading
@@ -59,9 +61,17 @@ import java.util.List;
             cv.put(COLUMN_VEHICLE_LOCATION, VM.getCity());
             cv.put(COLUMN_VEHICLE_DESCRIPTION, VM.getDescription());
             cv.put(COLUMN_VEHICLE_RENT, VM.getRent());
-            cv.put(COLUMN_img, VM.getImg());
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            VM.getImg().compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] imageBytes = stream.toByteArray();
+            cv.put(COLUMN_img, imageBytes);
 
             long insert = db.insert(VEHICLE_TABLE, null, cv);
+
+
+
+            db.close();
             if(insert == -1){
                 return false;
             }

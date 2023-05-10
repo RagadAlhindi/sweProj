@@ -1,5 +1,7 @@
 package com.example.sweproj;
 
+import android.graphics.Bitmap;
+
 public class VehicleModel {
 
     private int id;
@@ -11,10 +13,10 @@ public class VehicleModel {
     private String description;
     private int rent;
 
-    private byte [] img;
+    private Bitmap img;
 
 
-    public VehicleModel(int id, String plateNo, String model, int year, String type, String city, String description, int rent, byte[] img) {
+    public VehicleModel(int id, String plateNo, String model, int year, String type, String city, String description, int rent, Bitmap img) {
         this.id = id;
         this.plateNo = plateNo;
         this.model = model;
@@ -73,7 +75,7 @@ public class VehicleModel {
         return rent;
     }
 
-    public byte[] getImg() {
+    public Bitmap getImg() {
         return img;
     }
 }

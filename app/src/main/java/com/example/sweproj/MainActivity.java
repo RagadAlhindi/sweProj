@@ -238,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_IMAGE_CHOOSER && resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
             handleImageSelection(selectedImageUri);
+            IVPreviewImage.setImageURI(selectedImageUri);
         }
     }
 
